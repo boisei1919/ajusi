@@ -3,54 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파오후 아저씨의 전당</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <title>★☆파오후 아저씨의 전당☆★</title>
     <style>
-        /* ========== 디자인(CSS) 구역 ========== */
+        /* ========== [킹받는 디자인 구역] ========== */
         body {
-            font-family: 'Gowun Dodum', sans-serif;
-            /* [기본 상태] 1단계: 적당히 눅눅함 */
+            /* 근본 있는 궁서체 */
+            font-family: 'Gungsuh', 'Batang', serif; 
+            /* 기본 배경: 누런 장판 색깔 */
             background-color: #e8dab2; 
             background-image: linear-gradient(180deg, #fff9c4 0%, #d7ccc8 100%);
             color: #4e342e;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
-            transition: all 0.5s ease; /* 배경 바뀔 때 스르륵 */
+            transition: all 0.5s ease;
+            overflow-x: hidden;
         }
 
-        /* ▼▼▼ [핵심] 버튼 누르면 발동되는 '초강력 기름 모드' ▼▼▼ */
-        body.super-dank-mode {
-            background-color: #5d4037; /* 배경이 확 어두워짐 */
-            /* 기름 쩐 피자 박스 바닥 색깔 */
-            background-image: linear-gradient(180deg, #d7ccc8 0%, #3e2723 100%);
+        /* ▼▼▼ [입장 전 경고 화면] ▼▼▼ */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: red;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
-        
-        /* 버튼 누르면 글씨 색도 하얗게 바꿔서 잘 보이게 함 */
+        #intro-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            border: 5px dashed red;
+            padding: 30px;
+            animation: blink 0.4s infinite; /* 눈 아프게 깜빡임 */
+        }
+        #intro-sub {
+            margin-top: 20px;
+            color: yellow;
+            font-size: 1.2rem;
+            animation: blink 0.8s infinite reverse;
+        }
+        @keyframes blink {
+            0% { opacity: 1; border-color: red; color: red; }
+            50% { opacity: 0.5; border-color: yellow; color: yellow; }
+            100% { opacity: 1; border-color: red; color: red; }
+        }
+
+        /* 상단 흐르는 글씨 */
+        .marquee-container {
+            background: #ff0000;
+            color: yellow;
+            font-weight: bold;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-bottom: 3px solid black;
+        }
+
+        /* 햄버거 주면 변하는 [초강력 기름 모드] */
+        body.super-dank-mode {
+            background-color: #3e2723;
+            /* 정신사나운 빗살무늬 패턴 */
+            background-image: repeating-linear-gradient(
+                45deg,
+                #3e2723,
+                #3e2723 10px,
+                #4e342e 10px,
+                #4e342e 20px
+            );
+        }
         body.super-dank-mode h1, 
         body.super-dank-mode .desc, 
         body.super-dank-mode .stats {
             color: #fff; 
-            text-shadow: 1px 1px 2px #000;
+            text-shadow: 3px 3px 0px #ff0000;
         }
-        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
 
         .container {
             max-width: 600px;
-            margin: 30px auto;
+            margin: 50px auto;
             background: #fff;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
-            border: 3px solid #d7ccc8;
+            border: 10px ridge #d7ccc8; /* 옛날 액자 테두리 */
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+            transform: rotate(-2deg); /* 삐딱함 */
         }
+
         h1 {
-            color: #bf360c;
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 0px #fff9c4;
+            /* 무지개 텍스트 */
+            background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: rainbow 1s linear infinite;
         }
+        @keyframes rainbow { 100% { filter: hue-rotate(360deg); } }
+
         .profile-img {
             width: 250px;
             height: 250px;
@@ -58,106 +113,167 @@
             border-radius: 50%; 
             margin: 20px auto;
             object-fit: cover;
-            border: 8px solid #ffb74d; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border: 10px double #ff0000;
+            animation: breathe 3s infinite ease-in-out; /* 숨쉬기 운동 */
         }
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         .desc {
-            font-size: 1.2rem;
-            line-height: 1.6;
+            font-size: 1.3rem;
+            line-height: 1.8;
             margin-bottom: 30px;
             font-weight: bold;
+            background-color: yellow;
+            display: inline-block;
         }
+
         .stats {
-            background-color: #fff3e0;
+            background-color: #000;
+            color: #0f0 !important; /* 해커 감성 */
             padding: 20px;
-            border-radius: 15px;
-            list-style: none;
-            padding-left: 0;
-            border: 2px dashed #ffb74d;
-            color: #4e342e; /* 기본 글씨색 */
+            font-family: 'Courier New', monospace;
+            list-style: square;
+            text-align: left;
+            border: 5px solid #0f0;
         }
         .stats li {
             padding: 8px;
             font-size: 1.1rem;
+            border-bottom: 1px dashed #0f0;
         }
+
         .btn {
             display: inline-block;
             margin-top: 25px;
-            padding: 15px 30px;
-            background-color: #bf360c;
-            color: white;
+            padding: 20px 40px;
+            background-color: blue;
+            color: yellow;
             text-decoration: none;
-            border-radius: 50px;
+            font-size: 1.5rem;
             font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(191, 54, 12, 0.4);
-            transition: transform 0.2s;
+            border: 5px outset white;
             cursor: pointer;
-            border: none;
+            animation: shake 0.3s infinite; /* 배고파서 떪 */
         }
-        .btn:hover {
-            background-color: #d84315;
-            transform: scale(1.05);
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
-        
-        /* ▼▼▼ 리액션 이미지 디자인 (처음엔 숨김) ▼▼▼ */
+        .btn:active { border: 5px inset white; }
+
+        /* 리액션 이미지 (평소엔 안 보임) */
         #reaction-img {
             display: none; 
-            width: 100%; /* 사진이 좀 더 시원하게 크게 나오게 수정 */
+            width: 100%; 
             max-width: 450px;
             margin: 30px auto 0;
-            border-radius: 15px;
-            border: 5px solid #bf360c;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 10px solid gold;
+            animation: spin-in 1s;
         }
-        @keyframes pop-in {
-            0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
+        @keyframes spin-in {
+            0% { transform: rotate(0deg) scale(0); }
+            100% { transform: rotate(720deg) scale(1); }
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: #aaa;
         }
     </style>
 </head>
 <body>
 
+    <audio id="myAudio" loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="intro-screen" onclick="enterSite()">
+        <div id="intro-text">
+            ⚠ WARNING ⚠<br>
+            TOO MUCH FAT
+        </div>
+        <div id="intro-sub">
+            (화면을 클릭하면 입장합니다)
+        </div>
+    </div>
+
+    <div class="marquee-container">
+        <marquee scrollamount="12">
+            ★☆★ 긴급속보: 파오후 아저씨, 숨쉬기 운동 3회 실시 후 실신... "너무 힘들어" ★☆★ 피자 3판 섭취시 무료 배달 가능 ★☆★ 콜라 리필 불가에 격분 ★☆★
+        </marquee>
+    </div>
+
     <div class="container">
-        <h1>🍕 파오후 아저씨 🥤</h1>
+        <h1>♨ 파오후 아저씨 ♨</h1>
         
         <img src="https://i.ifh.cc/nG2JHJ.jpg" alt="파오후 아저씨 사진" class="profile-img">
         
         <div class="desc">
-            <p><strong>"후욱... 후욱... 이건 살이 아니라 인격이야."</strong></p>
-            <p>
-                숨만 쉬어도 땀이 나는<br>
-                그의 기름진 일상을 구경하세요.
-            </p>
+            "후욱... 후욱...<br>이건 살이 아니라<br>인.격.이.야."
         </div>
 
         <ul class="stats">
-            <li>💖 선호: 제로 콜라(마지막 양심), 치킨 껍질</li>
-            <li>🚫 혐오: 오르막길, 야채만 든 샌드위치</li>
+            <li>[INFO] Name: 아저씨</li>
+            <li>[HP] ■■□□□ (고혈압)</li>
+            <li>[MP] ■■■■■ (식욕)</li>
+            <li>[WEIGHT] 비밀 (아마 세자리 수)</li>
+            <li>[LIKE] Zero-Cola, Pizza</li>
+            <li>[HATE] Stairs(계단), Veggie</li>
         </ul>
 
-        <button class="btn" onclick="giveBurger()">🍔 햄버거 사주기 (클릭!)</button>
+        <button class="btn" onclick="giveBurger()">
+            🍔 햄버거 내놔 🍔
+        </button>
 
         <img id="reaction-img" src="https://i.ifh.cc/x7Lgzf.jpg" alt="햄버거 먹고 빵긋">
+
+        <div class="footer">
+            Designed by Pizza-Lover<br>
+            (c) 2026 All Fat Reserved.
         </div>
+    </div>
 
     <script>
-        /* ========== 작동 기능(자바스크립트) 구역 ========== */
-        function giveBurger() {
-            // 1. 배경을 어둡고 눅눅하게(super-dank-mode) 변경
-            document.body.classList.add("super-dank-mode");
+        // 사이트 입장 함수 (음악 재생 + 경고창 끄기)
+        function enterSite() {
+            var audio = document.getElementById("myAudio");
+            var intro = document.getElementById("intro-screen");
+            
+            audio.volume = 0.6; // 볼륨 설정
+            
+            // 음악 재생 시도
+            audio.play().then(() => {
+                intro.style.display = "none"; // 성공하면 경고창 삭제
+            }).catch(error => {
+                console.log("브라우저가 막음");
+                intro.style.display = "none"; // 막혀도 일단 들여보내줌
+            });
+        }
 
-            // 2. 숨겨뒀던 사진을 보이게 설정
+        // 햄버거 주기 함수
+        function giveBurger() {
+            // 배경 바꾸기
+            document.body.classList.add("super-dank-mode");
+            
+            // 사진 띄우기
             document.getElementById("reaction-img").style.display = "block";
             
-            // 3. 버튼 멘트 변경
-            document.querySelector(".btn").innerText = "77ㅓ억... (행복)";
+            // 버튼 멘트 변경
+            var btn = document.querySelector(".btn");
+            btn.innerText = "77ㅓ억... (행복사)";
+            btn.disabled = true;
+            btn.style.animation = "none"; 
+            btn.style.backgroundColor = "#555";
+            btn.style.color = "#fff";
             
-            // 4. (추가기능) 버튼 못 누르게 비활성화 (계속 누르면 이상하니까)
-            document.querySelector(".btn").disabled = true;
-            document.querySelector(".btn").style.backgroundColor = "#5d4037"; // 버튼 색도 죽임
+            // 킹받는 알림창
+            alert("후욱... 후욱... 맛있다능... (기름 +100)");
         }
     </script>
 
