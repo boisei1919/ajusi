@@ -4,66 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>파오후 아저씨의 전당</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <style>
-        /* 여기서부터 디자인(CSS)입니다 */
+        /* ========== 디자인(CSS) 구역 ========== */
         body {
-            font-family: 'Gowun Dodum', sans-serif; /* 둥글둥글한 폰트 */
-            background-color: #fdf6e3; /* 따뜻한 크림색 배경 */
-            color: #586e75;
+            font-family: 'Gowun Dodum', sans-serif;
+            /* [기본 상태] 1단계: 적당히 눅눅함 */
+            background-color: #e8dab2; 
+            background-image: linear-gradient(180deg, #fff9c4 0%, #d7ccc8 100%);
+            color: #4e342e;
             text-align: center;
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
+            transition: all 0.5s ease; /* 배경 바뀔 때 스르륵 */
         }
+
+        /* ▼▼▼ [핵심] 버튼 누르면 발동되는 '초강력 기름 모드' ▼▼▼ */
+        body.super-dank-mode {
+            background-color: #5d4037; /* 배경이 확 어두워짐 */
+            /* 기름 쩐 피자 박스 바닥 색깔 */
+            background-image: linear-gradient(180deg, #d7ccc8 0%, #3e2723 100%);
+        }
+        
+        /* 버튼 누르면 글씨 색도 하얗게 바꿔서 잘 보이게 함 */
+        body.super-dank-mode h1, 
+        body.super-dank-mode .desc, 
+        body.super-dank-mode .stats {
+            color: #fff; 
+            text-shadow: 1px 1px 2px #000;
+        }
+        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
+
         .container {
             max-width: 600px;
-            margin: 50px auto;
-            background: white;
+            margin: 30px auto;
+            background: #fff;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
+            border: 3px solid #d7ccc8;
         }
         h1 {
-            color: #d33682;
+            color: #bf360c;
             font-size: 2.5rem;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #fff9c4;
         }
         .profile-img {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             background-color: #eee;
-            border-radius: 50%; /* 동그라미 프사 */
+            border-radius: 50%; 
             margin: 20px auto;
             object-fit: cover;
-            border: 5px solid #d33682;
+            border: 8px solid #ffb74d; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         .desc {
             font-size: 1.2rem;
             line-height: 1.6;
             margin-bottom: 30px;
+            font-weight: bold;
         }
         .stats {
-            background-color: #eee8d5;
-            padding: 15px;
-            border-radius: 10px;
+            background-color: #fff3e0;
+            padding: 20px;
+            border-radius: 15px;
             list-style: none;
             padding-left: 0;
+            border: 2px dashed #ffb74d;
+            color: #4e342e; /* 기본 글씨색 */
         }
         .stats li {
-            padding: 5px;
-            font-weight: bold;
+            padding: 8px;
+            font-size: 1.1rem;
         }
         .btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #d33682;
+            margin-top: 25px;
+            padding: 15px 30px;
+            background-color: #bf360c;
             color: white;
             text-decoration: none;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(191, 54, 12, 0.4);
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
         }
         .btn:hover {
-            background-color: #b71c1c;
+            background-color: #d84315;
+            transform: scale(1.05);
+        }
+        
+        /* ▼▼▼ 리액션 이미지 디자인 (처음엔 숨김) ▼▼▼ */
+        #reaction-img {
+            display: none; 
+            width: 100%; /* 사진이 좀 더 시원하게 크게 나오게 수정 */
+            max-width: 450px;
+            margin: 30px auto 0;
+            border-radius: 15px;
+            border: 5px solid #bf360c;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -72,25 +123,43 @@
     <div class="container">
         <h1>🍕 파오후 아저씨 🥤</h1>
         
-        <img src="https://placebear.com/400/400" alt="파오후 아저씨 사진" class="profile-img">
+        <img src="https://i.ifh.cc/nG2JHJ.jpg" alt="파오후 아저씨 사진" class="profile-img">
         
         <div class="desc">
             <p><strong>"후욱... 후욱... 이건 살이 아니라 인격이야."</strong></p>
             <p>
-                이곳은 풍만한 매력의 소유자,<br>
-                파오후 아저씨를 기리는 공간입니다.<br>
-                콜라와 피자를 사랑하는 그의 일상을 확인하세요.
+                숨만 쉬어도 땀이 나는<br>
+                그의 기름진 일상을 구경하세요.
             </p>
         </div>
 
         <ul class="stats">
-            <li>💖 좋아하는 것: 배달 음식, 누워있기</li>
-            <li>🚫 싫어하는 것: 계단, 브로콜리</li>
-            <li>⚖️ 체중: 비밀 (3자리 추정)</li>
+            <li>💖 선호: 제로 콜라(마지막 양심), 치킨 껍질</li>
+            <li>🚫 혐오: 오르막길, 야채만 든 샌드위치</li>
         </ul>
 
-        <a href="#" class="btn">아저씨에게 간식 주기</a>
-    </div>
+        <button class="btn" onclick="giveBurger()">🍔 햄버거 사주기 (클릭!)</button>
+
+        <img id="reaction-img" src="https://i.ifh.cc/x7Lgzf.jpg" alt="햄버거 먹고 빵긋">
+        </div>
+
+    <script>
+        /* ========== 작동 기능(자바스크립트) 구역 ========== */
+        function giveBurger() {
+            // 1. 배경을 어둡고 눅눅하게(super-dank-mode) 변경
+            document.body.classList.add("super-dank-mode");
+
+            // 2. 숨겨뒀던 사진을 보이게 설정
+            document.getElementById("reaction-img").style.display = "block";
+            
+            // 3. 버튼 멘트 변경
+            document.querySelector(".btn").innerText = "77ㅓ억... (행복)";
+            
+            // 4. (추가기능) 버튼 못 누르게 비활성화 (계속 누르면 이상하니까)
+            document.querySelector(".btn").disabled = true;
+            document.querySelector(".btn").style.backgroundColor = "#5d4037"; // 버튼 색도 죽임
+        }
+    </script>
 
 </body>
 </html>
