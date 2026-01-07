@@ -10,10 +10,7 @@
     <style>
         /* ========== [킹받는 디자인 구역] ========== */
         body {
-            /* 폰트 변경: 이제 폰에서도 진지한 명조체가 나옵니다 */
             font-family: 'Nanum Myeongjo', serif; 
-            
-            /* 기본 배경: 누런 장판 색깔 */
             background-color: #e8dab2; 
             background-image: linear-gradient(180deg, #fff9c4 0%, #d7ccc8 100%);
             color: #4e342e;
@@ -22,37 +19,22 @@
             padding: 0;
             min-height: 100vh;
             transition: all 0.5s ease;
-            overflow-x: hidden;
+            overflow-x: hidden; 
         }
 
-        /* ▼▼▼ [입장 전 경고 화면] ▼▼▼ */
+        /* [입장 전 경고 화면] */
         #intro-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            color: red;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; color: red; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             cursor: pointer;
         }
         #intro-text {
-            font-size: 2.5rem;
-            font-weight: bold;
-            border: 5px dashed red;
-            padding: 30px;
-            animation: blink 0.4s infinite; /* 눈 아프게 깜빡임 */
+            font-size: 2.5rem; font-weight: bold; border: 5px dashed red; padding: 30px;
+            animation: blink 0.4s infinite; 
         }
         #intro-sub {
-            margin-top: 20px;
-            color: yellow;
-            font-size: 1.2rem;
-            animation: blink 0.8s infinite reverse;
+            margin-top: 20px; color: yellow; font-size: 1.2rem; animation: blink 0.8s infinite reverse;
         }
         @keyframes blink {
             0% { opacity: 1; border-color: red; color: red; }
@@ -62,104 +44,82 @@
 
         /* 상단 흐르는 글씨 */
         .marquee-container {
-            background: #ff0000;
-            color: yellow;
-            font-weight: bold;
-            padding: 10px;
-            font-size: 1.2rem;
-            border-bottom: 3px solid black;
+            background: #ff0000; color: yellow; font-weight: bold; padding: 10px;
+            font-size: 1.2rem; border-bottom: 3px solid black;
         }
 
-        /* 햄버거 주면 변하는 [초강력 기름 모드] */
+        /* [초강력 기름 모드] */
         body.super-dank-mode {
             background-color: #3e2723;
-            background-image: repeating-linear-gradient(
-                45deg,
-                #3e2723,
-                #3e2723 10px,
-                #4e342e 10px,
-                #4e342e 20px
-            );
+            background-image: repeating-linear-gradient(45deg, #3e2723, #3e2723 10px, #4e342e 10px, #4e342e 20px);
         }
-        body.super-dank-mode h1, 
-        body.super-dank-mode .desc, 
-        body.super-dank-mode .stats {
-            color: #fff; 
-            text-shadow: 3px 3px 0px #ff0000;
+        body.super-dank-mode h1, body.super-dank-mode .desc, body.super-dank-mode .stats {
+            color: #fff; text-shadow: 3px 3px 0px #ff0000;
         }
 
+        /* 메인 컨텐츠 박스 */
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 30px;
-            border: 10px ridge #d7ccc8;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+            max-width: 600px; margin: 50px auto; background: #fff; padding: 30px;
+            border: 10px ridge #d7ccc8; box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
             transform: rotate(-2deg);
         }
 
         h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 3rem; margin-bottom: 10px;
             background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: rainbow 1s linear infinite;
+            -webkit-background-clip: text; color: transparent; animation: rainbow 1s linear infinite;
         }
         @keyframes rainbow { 100% { filter: hue-rotate(360deg); } }
 
+        /* 프로필 사진 */
         .profile-img {
-            width: 250px;
-            height: 250px;
-            background-color: #eee;
-            border-radius: 50%; 
-            margin: 20px auto;
-            object-fit: cover;
-            border: 10px double #ff0000;
-            animation: breathe 3s infinite ease-in-out;
+            width: 250px; height: 250px; background-color: #eee;
+            border-radius: 50%; object-fit: cover; border: 10px double #ff0000;
+            animation: breathe 3s infinite ease-in-out; margin: 20px auto;
         }
         @keyframes breathe {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
         }
 
         .desc {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            font-weight: bold;
-            background-color: yellow;
-            display: inline-block;
+            font-size: 1.3rem; line-height: 1.8; margin-bottom: 30px;
+            font-weight: bold; background-color: yellow; display: inline-block;
         }
 
         .stats {
-            background-color: #000;
-            color: #0f0 !important;
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            list-style: square;
-            text-align: left;
+            background-color: #000; color: #0f0 !important; padding: 20px;
+            font-family: 'Courier New', monospace; list-style: square; text-align: left;
             border: 5px solid #0f0;
+            margin-bottom: 0; /* 아래쪽 여백 제거 (피카츄랑 붙이려고) */
         }
         .stats li {
-            padding: 8px;
-            font-size: 1.1rem;
-            border-bottom: 1px dashed #0f0;
+            padding: 8px; font-size: 1.1rem; border-bottom: 1px dashed #0f0;
         }
 
+        /* ▼▼▼ [NEW] 스탯창 아래 피카츄들 정렬 ▼▼▼ */
+        .dancers-row {
+            display: flex;             /* 가로로 나열 */
+            justify-content: center;   /* 가운데 정렬 */
+            gap: 10px;                 /* 피카츄 사이 간격 */
+            margin-top: 10px;          /* 스탯창이랑 약간 띄우기 */
+            margin-bottom: 10px;       /* 버튼이랑 띄우기 */
+            padding: 10px;
+            background-color: #eee;    /* 피카츄들이 서있는 바닥 색깔 */
+            border: 2px solid #ccc;    /* 바닥 테두리 */
+        }
+
+        .dancer-icon {
+            width: 60px;  /* 피카츄 크기 (너무 크면 줄 깨져서 적당히 조절함) */
+            height: 60px;
+            object-fit: contain;
+        }
+        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
+
         .btn {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 20px 40px;
-            background-color: blue;
-            color: yellow;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border: 5px outset white;
-            cursor: pointer;
-            animation: shake 0.3s infinite;
+            display: inline-block; margin-top: 25px; padding: 20px 40px;
+            background-color: blue; color: yellow; text-decoration: none;
+            font-size: 1.5rem; font-weight: bold; border: 5px outset white;
+            cursor: pointer; animation: shake 0.3s infinite;
         }
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -169,22 +129,15 @@
         .btn:active { border: 5px inset white; }
 
         #reaction-img {
-            display: none; 
-            width: 100%; 
-            max-width: 450px;
-            margin: 30px auto 0;
-            border: 10px solid gold;
-            animation: spin-in 1s;
+            display: none; width: 100%; max-width: 450px; margin: 30px auto 0;
+            border: 10px solid gold; animation: spin-in 1s;
         }
         @keyframes spin-in {
-            0% { transform: rotate(0deg) scale(0); }
-            100% { transform: rotate(720deg) scale(1); }
+            0% { transform: rotate(0deg) scale(0); } 100% { transform: rotate(720deg) scale(1); }
         }
 
         .footer {
-            margin-top: 50px;
-            font-size: 0.8rem;
-            color: #aaa;
+            margin-top: 50px; font-size: 0.8rem; color: #aaa;
         }
     </style>
 </head>
@@ -195,13 +148,8 @@
     </audio>
 
     <div id="intro-screen" onclick="enterSite()">
-        <div id="intro-text">
-            ⚠ WARNING ⚠<br>
-            TOO MUCH FAT
-        </div>
-        <div id="intro-sub">
-            (화면을 클릭하면 입장합니다)
-        </div>
+        <div id="intro-text">⚠ WARNING ⚠<br>TOO MUCH FAT</div>
+        <div id="intro-sub">(화면을 클릭하면 입장합니다)</div>
     </div>
 
     <div class="marquee-container">
@@ -228,6 +176,12 @@
             <li>[HATE] Stairs(계단), Veggie</li>
         </ul>
 
+        <div class="dancers-row">
+            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+        </div>
         <button class="btn" onclick="giveBurger()">
             🍔 햄버거 내놔 🍔
         </button>
@@ -241,35 +195,25 @@
     </div>
 
     <script>
-        // ▼▼▼ 여기부터 수정된 기능 ▼▼▼
-        
-        // 입장 기능 (음악 안 나와도 일단 문부터 엶)
+        // 입장 기능
         function enterSite() {
             var intro = document.getElementById("intro-screen");
             var audio = document.getElementById("myAudio");
-            
-            // 1. 경고창은 무조건 삭제 (입장 허용)
-            intro.style.display = "none";
-
-            // 2. 그 다음 음악 재생 시도
+            intro.style.display = "none"; 
             audio.volume = 0.6;
-            audio.play().catch(function(error) {
-                console.log("음악 재생 실패 (파일 확인 또는 브라우저 차단): " + error);
-            });
+            audio.play().catch(function(error) { console.log("BGM 재생 실패"); });
         }
 
         // 햄버거 주기 기능
         function giveBurger() {
             document.body.classList.add("super-dank-mode");
             document.getElementById("reaction-img").style.display = "block";
-            
             var btn = document.querySelector(".btn");
             btn.innerText = "77ㅓ억... (행복사)";
             btn.disabled = true;
             btn.style.animation = "none"; 
             btn.style.backgroundColor = "#555";
             btn.style.color = "#fff";
-            
             alert("후욱... 후욱... 맛있다능... (기름 +100)");
         }
     </script>
