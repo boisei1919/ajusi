@@ -1,138 +1,423 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>★☆파오후 아저씨의 전당☆★</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
 
     <style>
         /* ========== [킹받는 디자인 구역] ========== */
         body {
-            font-family: 'Gungsuh', '궁서', serif; 
-            background-color: #e8dab2; 
-            background-image: linear-gradient(180deg, #fff9c4 0%, #d7ccc8 100%);
+            font-family: 'Gungsuh', '궁서', serif;
+            background-color: #fcf6e6;
             color: #4e342e;
             text-align: center;
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            transition: all 0.5s ease;
-            overflow-x: hidden; 
+            transition: all 0.8s ease;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* 미러볼 효과를 위해 body 자체에 relative 설정 */
+            position: relative;
         }
 
+        /* [미러볼 조명 효과 레이어] - 노래방 느낌 */
+        .mirror-ball-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 200vmax;
+            /* 화면보다 훨씬 크게 */
+            height: 200vmax;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            /* 배경보다는 위, 콘텐츠보다는 아래 */
+            pointer-events: none;
+            /* 클릭 통과 */
+            mix-blend-mode: color-burn;
+            /* 배경이랑 섞여서 촌스러운 느낌 */
+            opacity: 0.3;
+            display: none;
+            /* 입장 전엔 숨김 */
+
+            /* 무지개빛 빔 쏘기 */
+            background: conic-gradient(from 0deg,
+                    #ff0000 0deg, transparent 15deg,
+                    #ffff00 60deg, transparent 75deg,
+                    #00ff00 120deg, transparent 135deg,
+                    #00ffff 180deg, transparent 195deg,
+                    #0000ff 240deg, transparent 255deg,
+                    #ff00ff 300deg, transparent 315deg,
+                    #ff0000 360deg);
+            animation: disco-spin 6s linear infinite;
+        }
+
+        /* 미러볼 반짝이 입자 (점박이 조명) */
+        .mirror-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 2.5px);
+            background-size: 50px 50px;
+            mix-blend-mode: overlay;
+            opacity: 0.5;
+            display: none;
+            animation: dot-move 10s linear infinite;
+        }
+
+        @keyframes disco-spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes dot-move {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 100px 100px;
+            }
+        }
+
+
+        /* [입장 전 경고 화면] */
         #intro-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; color: red; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: red;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
         }
+
         #intro-text {
-            font-size: 2.5rem; font-weight: bold; border: 5px dashed red; padding: 30px;
-            animation: blink 0.4s infinite; 
+            font-size: 2.5rem;
+            font-weight: bold;
+            border: 5px dashed red;
+            padding: 30px;
+            animation: blink 0.4s infinite;
         }
+
         #intro-sub {
-            margin-top: 20px; color: yellow; font-size: 1.2rem; animation: blink 0.8s infinite reverse;
+            margin-top: 20px;
+            color: yellow;
+            font-size: 1.2rem;
+            animation: blink 0.8s infinite reverse;
         }
+
         @keyframes blink {
-            0% { opacity: 1; border-color: red; color: red; }
-            50% { opacity: 0.5; border-color: yellow; color: yellow; }
-            100% { opacity: 1; border-color: red; color: red; }
+            0% {
+                opacity: 1;
+                border-color: red;
+                color: red;
+            }
+
+            50% {
+                opacity: 0.5;
+                border-color: yellow;
+                color: yellow;
+            }
+
+            100% {
+                opacity: 1;
+                border-color: red;
+                color: red;
+            }
         }
 
         .marquee-container {
-            background: #ff0000; color: yellow; font-weight: bold; padding: 10px;
-            font-size: 1.2rem; border-bottom: 3px solid black;
+            width: 100%;
+            background: #ff0000;
+            color: yellow;
+            font-weight: bold;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            border-bottom: 3px solid black;
+            position: relative;
+            z-index: 100;
+            margin-bottom: 30px;
         }
 
+        /* [초강력 기름 모드] - 배경 더 어둡게 해서 조명 강조 */
         body.super-dank-mode {
-            background-color: #3e2723;
-            background-image: repeating-linear-gradient(45deg, #3e2723, #3e2723 10px, #4e342e 10px, #4e342e 20px);
-        }
-        body.super-dank-mode h1, body.super-dank-mode .desc, body.super-dank-mode .stats {
-            color: #fff; text-shadow: 3px 3px 0px #ff0000;
+            background-color: #2b1d1a;
         }
 
-        .container {
-            max-width: 600px; margin: 50px auto; background: #fff; padding: 30px;
-            border: 10px ridge #d7ccc8; box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
-            transform: rotate(-2deg);
+        /* 기름 모드일 때 미러볼 더 강하게 */
+        body.super-dank-mode .mirror-ball-effect {
+            opacity: 0.6;
+            animation-duration: 2s;
+            /* 회전 속도 빨라짐 */
+            mix-blend-mode: hard-light;
         }
 
+        body.super-dank-mode h1,
+        body.super-dank-mode .desc,
+        body.super-dank-mode .stats {
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        /* ========== [햄버거 레이아웃 시스템] ========== */
+        .burger-wrapper {
+            width: 90%;
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            /* 햄버거 전체가 살짝 둥실거리는 애니메이션 */
+            animation: floating 3s ease-in-out infinite;
+            z-index: 10;
+            /* 미러볼 위에 떠야 함 */
+            position: relative;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(0.5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        /* 공통 레이어 스타일 */
+        .layer {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            border: 4px solid #4e342e;
+            position: relative;
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            background-clip: padding-box;
+            /* 배경 삐져나감 방지 */
+        }
+
+        .layer:hover {
+            transform: scale(1.02);
+        }
+
+        /* 1. 윗 빵 (Top Bun) */
+        .bun-top {
+            background-color: #f4a460;
+            border-radius: 150px 150px 20px 20px;
+            padding-top: 50px;
+            padding-bottom: 30px;
+            z-index: 5;
+            position: relative;
+        }
+
+        /* 참깨 (Sesame Seeds) */
+        .seed {
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: #ffe4b5;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        /* 2. 양상추 (Lettuce) */
+        .lettuce {
+            background-color: #90ee90;
+            border-radius: 20px;
+            margin-top: -10px;
+            z-index: 4;
+            color: #006400;
+        }
+
+        /* 3. 치즈 (Cheese) */
+        .cheese {
+            background-color: #ffd700;
+            border-radius: 10px;
+            margin-top: -10px;
+            width: 105%;
+            align-self: center;
+            z-index: 3;
+            color: #5d4037;
+        }
+
+        /* 4. 패티 (Patty) */
+        .meat {
+            background-color: #8b4513;
+            border-radius: 30px;
+            margin-top: -10px;
+            padding: 30px 10px;
+            z-index: 2;
+            color: #fff;
+        }
+
+        /* 5. 아랫 빵 (Bottom Bun) */
+        .bun-bottom {
+            background-color: #f4a460;
+            border-radius: 20px 20px 80px 80px;
+            margin-top: -10px;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            z-index: 1;
+        }
+
+        /* 내부 요소 스타일 */
         h1 {
-            font-size: 3rem; margin-bottom: 10px;
-            background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-            -webkit-background-clip: text; color: transparent; animation: rainbow 1s linear infinite;
+            font-size: 2.5rem;
+            margin: 0;
+            margin-bottom: 15px;
+            background-image: linear-gradient(to bottom, #fff, #ffe0b2);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 0px #8b4513;
         }
-        @keyframes rainbow { 100% { filter: hue-rotate(360deg); } }
 
         .profile-img {
-            width: 250px; height: 250px; background-color: #eee;
-            border-radius: 50%; object-fit: cover; border: 10px double #ff0000;
-            animation: breathe 3s infinite ease-in-out; margin: 20px auto;
-        }
-        @keyframes breathe {
-            0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
+            width: 200px;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            animation: breathe 3s infinite ease-in-out;
         }
 
         .desc {
-            font-size: 1.3rem; line-height: 1.8; margin-bottom: 30px;
-            font-weight: bold; background-color: yellow; display: inline-block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            line-height: 1.6;
         }
 
         .stats {
-            background-color: #000; color: #0f0 !important; padding: 20px;
-            font-family: 'Courier New', monospace; list-style: square; text-align: left;
-            border: 5px solid #0f0;
-            margin-bottom: 0; 
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            display: inline-block;
         }
+
         .stats li {
-            padding: 8px; font-size: 1.1rem; border-bottom: 1px dashed #0f0;
+            margin: 5px 0;
+            font-weight: bold;
         }
 
         .dancers-row {
-            display: flex; justify-content: center; gap: 10px; margin-top: 10px; margin-bottom: 10px;       
-            padding: 10px; background-color: #eee; border: 2px solid #ccc;    
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
         }
-        .dancer-icon { width: 60px; height: 60px; object-fit: contain; }
+
+        .dancer-icon {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
 
         .btn {
-            display: inline-block; margin-top: 25px; padding: 20px 40px;
-            background-color: blue; color: yellow; text-decoration: none;
-            font-size: 1.5rem; font-weight: bold; border: 5px outset white;
-            cursor: pointer; animation: shake 0.3s infinite;
-            font-family: 'Gungsuh', '궁서', serif; 
-            position: relative; z-index: 10;
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: #d32f2f;
+            color: yellow;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 5px outset #ffcdd2;
+            cursor: pointer;
+            animation: shake 2s infinite;
+            font-family: 'Gungsuh', '궁서', serif;
+            border-radius: 10px;
         }
+
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            90% {
+                transform: rotate(0deg);
+            }
+
+            95% {
+                transform: rotate(2deg);
+            }
+
+            100% {
+                transform: rotate(-2deg);
+            }
         }
-        .btn:active { border: 5px inset white; transform: scale(0.95); }
+
+        .btn:active {
+            border: 5px inset #ffcdd2;
+            transform: scale(0.95);
+        }
 
         #reaction-img {
-            display: none; width: 100%; max-width: 450px; margin: 30px auto 0;
-            border: 10px solid gold; animation: spin-in 1s;
-        }
-        @keyframes spin-in {
-            0% { transform: rotate(0deg) scale(0); } 100% { transform: rotate(720deg) scale(1); }
+            display: none;
+            width: 80%;
+            max-width: 300px;
+            margin: 20px auto 0;
+            border: 5px solid gold;
+            border-radius: 50%;
         }
 
-        .footer { margin-top: 50px; font-size: 0.8rem; color: #aaa; }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #5d4037;
+            opacity: 0.7;
+        }
 
-        /* 햄버거 폭죽 효과 */
+        /* 폭죽 효과 */
         .burger-particle {
-            position: fixed; font-size: 2rem; pointer-events: none; z-index: 9999;
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 9999;
             animation: pop-out 1s ease-out forwards;
         }
+
         @keyframes pop-out {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.5); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.5); opacity: 0; }
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <audio id="myAudio" loop>
@@ -144,107 +429,221 @@
         <div id="intro-sub">(화면을 클릭하면 입장합니다)</div>
     </div>
 
+    <div id="mirrorBall" class="mirror-ball-effect"></div>
+    <div id="mirrorDots" class="mirror-dots"></div>
+
     <div class="marquee-container">
         <marquee scrollamount="12">
-            ★☆★ 긴급속보: 파오후 아저씨, 숨쉬기 운동 3회 실시 후 실신... "너무 힘들어" ★☆★ 피자 3판 섭취시 무료 배달 가능 ★☆★
+            ★☆★ 긴급속보: 파오후 아저씨, 햄버거와 물아일체 경지 도달... "내가 곧 햄버거다" ★☆★
         </marquee>
     </div>
 
-    <div class="container">
-        <h1>♨ 파오후 아저씨 ♨</h1>
-        <img src="https://i.ifh.cc/nG2JHJ.jpg" alt="파오후 아저씨 사진" class="profile-img">
-        <div class="desc">
-            "후욱... 후욱...<br>이건 살이 아니라<br>인.격.이.야."
+    <div class="burger-wrapper">
+
+        <div class="layer bun-top">
+            <div class="seed" style="top: 30px; left: 20%;"></div>
+            <div class="seed" style="top: 20px; left: 50%;"></div>
+            <div class="seed" style="top: 40px; left: 70%;"></div>
+            <div class="seed" style="top: 60px; left: 35%;"></div>
+            <div class="seed" style="top: 50px; left: 85%;"></div>
+
+            <h1>♨ 파오후 아저씨 ♨</h1>
+            <img src="https://i.ifh.cc/nG2JHJ.jpg" alt="파오후 아저씨 사진" class="profile-img">
         </div>
 
-        <ul class="stats">
-            <li>[INFO] Name: 아저씨</li>
-            <li>[HP] ■■□□□ (고혈압)</li>
-            <li>[MP] ■■■■■ (식욕)</li>
-            <li>[WEIGHT] 비밀 (아마 세자리 수)</li>
-            <li>[LIKE] Zero-Cola, Pizza</li>
-            <li>[HATE] Stairs(계단), Veggie</li>
-        </ul>
-
-        <div class="dancers-row">
-            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
-            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
-            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
-            <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+        <div class="layer lettuce">
+            <div class="desc">
+                "후욱... 후욱...<br>이건 살이 아니라<br>인.격.이.야."
+            </div>
         </div>
-        
-        <button id="burgerBtn" class="btn" onclick="handleInteraction()">
-            🍔 햄버거 내놔 🍔
-        </button>
 
-        <img id="reaction-img" src="https://i.ifh.cc/x7Lgzf.jpg" alt="햄버거 먹고 빵긋">
-
-        <div class="footer">
-            Designed by Pizza-Lover<br>
-            (c) 2026 All Fat Reserved.
+        <div class="layer cheese">
+            <ul class="stats">
+                <li>[INFO] Name: 아저씨</li>
+                <li>[HP] ■■□□□ (고혈압)</li>
+                <li>[MP] ■■■■■ (식욕)</li>
+                <li>[LIKE] Zero-Cola, Pizza</li>
+            </ul>
         </div>
+
+        <div class="layer meat">
+            <div style="margin-bottom:10px; font-weight:bold;">[ DANCE TIME (육즙) ]</div>
+            <div class="dancers-row">
+                <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+                <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+                <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+                <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
+            </div>
+        </div>
+
+        <div class="layer bun-bottom">
+            <button id="burgerBtn" class="btn" onclick="handleInteraction()">
+                🍔 햄버거 내놔 🍔
+            </button>
+
+            <img id="reaction-img" src="https://i.ifh.cc/x7Lgzf.jpg" alt="햄버거 먹고 빵긋">
+
+            <div class="footer">
+                Designed by Burger-King-God<br>
+                (c) 2026 All Fat Reserved.
+            </div>
+        </div>
+
     </div>
-
     <script>
-        var isFirstClick = true; // 첫 클릭인지 확인하는 변수
-        
-        // 아저씨 랜덤 대사 리스트
+        var isFirstClick = true;
+
         var uncleLines = [
             "후욱... 제로콜라 마셨으니까 0칼로리라능.",
+            "맛있게 먹으면 0칼로리라는 말, 과학적으로 증명된 거 아니었어?",
+            "이건 살이 찌는 게 아니라, 내 안의 '포스'를 축적하는 과정이지.",
+            "피자는 채소야. 토마토 소스가 들어가잖아. (엄근진)",
+            "물만 마셔도 살찌는 체질이라 억울하다능... (손에는 콜라)",
+            "뇌를 많이 쓰면 당이 떨어진다고. 지금 난 천재 모드야.",
+            "다이어트는 원래 '내일'부터 하는 게 국룰 아님?",
+            "햄버거는 완전식품이야. 탄단지 비율이 완벽하지.",
+            "스트레스 받아서 먹는 건 살 안 쪄. 스트레스가 다 태워주거든.",
+            "국물은 남겼으니까 다이어트 성공! (건더기 다 먹음)",
+            "치킨은 살 안 쪄요. 살은 내가 쪄요.",
+            "이건 야식이 아니라 '얼리 모닝 밀(Early Morning Meal)'이라능.",
+            "땀 흘리면서 먹었으니 운동한 거나 다름없음.",
+            "뷔페에서 5접시 이하는 시식 코너 이용한 셈이지.",
+            "매운 거 먹으면 땀 나서 살 빠짐. 그러니 마라탕 추.",
+            "후식 배는 따로 있다는 거, 인체 해부학적으로 팩트임.",
+            "지금 안 먹으면 나중에 폭식해서 더 찐다? 예방 차원이야.",
+            "현기증 난단 말이에요... 빨리 라면 끓여주세요.",
+            "내 몸무게의 절반은 뼈와 근육... 그리고 '희망'이야.",
+            "제로 슈거니까 2배로 먹어도 되겠네? 개이득.",
             "야... 숨쉬기도 힘들다... (헐떡)",
-            "더 줘? 그럼 먹긴 먹는데...",
-            "(뱃살을 출렁거리며) 이건 지방이 아니라 튜브야.",
+            "후욱... 후욱... 엘리베이터 고장 났으면 미리 말을 해줬어야지...",
             "니가 내 땀맛을 알아? ;;",
-            "쿰척... 쿰척... 쩝쩝...",
+            "지금 흐르는 건 땀이 아니야. 지방이 흘리는 눈물이지.",
+            "여름이 싫다능... 내 육수가 멈추질 않아.",
+            "(겨드랑이를 닦으며) 아, 오늘 습도 왜 이래? 99%인가?",
+            "내 뱃살은... 일종의 에어백 같은 거야. 충격 흡수용.",
+            "발톱 깎는 게 제일 힘든 운동이라능. 유연성 테스트 수준.",
+            "앉았다 일어나는 데 기합이 필요해. 으라차차!!",
+            "후욱... 잠깐 타임. 당 떨어져서 손 떨려.",
+            "의자가 작아진 거야, 내가 커진 거야? 꽉 끼는데?",
+            "바지 단추가... 튕겨 나갔어... (아련)",
+            "걸을 때마다 허벅지 사이가 친하게 인사를 하네. 슥삭슥삭.",
+            "누가 에어컨 좀 틀어봐! 나만 더워?",
+            "아이고 허리야... 내 상체를 버티기엔 하체가 너무 가녀려.",
+            "내 땀 냄새? 이건 페로몬이야. 수컷의 향기.",
+            "(안경을 추켜올리며) 렌즈에 김 서려서 앞이 안 보여.",
+            "신발 끈 풀리면... 그건 오늘 하루를 포기하란 신호야.",
+            "겨울에도 반팔 입는 게 진정한 상남자지. (사실 더움)",
+            "숨 쉬는 소리가 좀 크다고? 이건 엔진 예열 소리라능.",
             "오늘 운동은 숨쉬기 운동으로 대체한다.",
+            "이불 밖은 위험해. 특히 헬스장은 더 위험해.",
+            "리모컨 가지러 가기 귀찮아서 그냥 뉴스 본다...",
+            "누워서 폰 하는 게 최고의 스트레칭 아니겠어?",
+            "운동하면 활성산소 생겨서 빨리 늙어. 난 동안 유지할래.",
+            "마우스 클릭하는 것도 손가락 근력 운동이라능.",
+            "걸어서 10분 거리? 택시 불러.",
+            "배달비 5천원? 내 체력을 아끼는 값으론 싸네.",
+            "뛰지 마... 심장 놀라. 걸어가는 것도 과분해.",
+            "근손실 올까 봐 움직임을 최소화하는 중이야. (근육 없음)",
+            "화장실 가는 것도 귀찮아서 참는 중... 이게 괄약근 운동이지.",
+            "내가 뛰는 날은 지구 멸망의 날뿐이다.",
+            "옆으로 돌아눕는 것도 큰 결심이 필요해.",
+            "3보 이상 승차. 이건 가훈이라능.",
+            "주말엔 동면 모드야. 깨우지 마.",
+            "헬스 끊어놓고 기부천사 된 게 벌써 5년째...",
+            "계단? 저건 악마가 만든 발명품이야.",
+            "눕방이 내 천직인데... 방송이나 켤까.",
+            "손 하나 까딱하기 싫다... 아, 배달 앱 켜야지.",
+            "숨 쉴 때마다 칼로리 소모되는 거 느껴짐? 난 느껴짐.",
+            "더 줘? 그럼 먹긴 먹는데... (눈 번쩍)",
+            "쿰척... 쿰척... 쩝쩝... (행복한 ASMR)",
             "배부른데... 계속 들어가네? 인체의 신비;;",
-            "후욱... 안경에 김서렸어..."
+            "(뱃살을 출렁거리며) 이건 지방이 아니라 튜브야.",
+            "사장님, 여기 밥 고봉으로 주세요. 꾹꾹 눌러서.",
+            "곱배기 아니면 취급 안 합니다. 그건 간식이죠.",
+            "한 입만 달라고? (정색) 선 넘네...",
+            "피자 꼬다리 남기는 놈들은 겸상 안 해.",
+            "부먹 찍먹? 고민할 시간에 처먹이라능.",
+            "뷔페 제한 시간 2시간? 나에겐 너무 짧은 승부처군.",
+            "콜라는 라지 사이즈가 기본값 아냐? 리필 되죠?",
+            "치즈 추가 안 했어? 하... 인생 헛살았네.",
+            "밤 12시에 먹는 라면이 미슐랭보다 맛있다능.",
+            "남기면 지옥 가서 비벼 먹어야 돼. 내가 다 처리해주지.",
+            "디저트 배는 4차원의 주머니 같은 거야.",
+            "방금 밥 먹었지만 핫도그 냄새는 못 참지.",
+            "소스는 '많이'가 아니라 '한강'처럼 뿌려주세요.",
+            "내 혈관엔 케첩과 마요네즈가 흐르고 있어.",
+            "삼겹살에 비계가 없으면 그게 고무지 고기냐?",
+            "오늘 메뉴 선정 실패하면 나 우울증 걸려.",
+            "(안경을 중지로 올리며) 훗... 예상대로의 맛이군.",
+            "어이, 거기 아가씨. 나 같은 곰 같은 스타일 어때?",
+            "내 잠재력이 봉인 해제되면... 너희 다 죽어. (무게로)",
+            "파오후라 놀리지 마라. 난 진화된 인류다.",
+            "2D 여자친구만이 나를 진정으로 이해해주지.",
+            "쿰척... 야메떼... 더 이상 먹이면 배 터진다능... (입 벌림)",
+            "현실은 시궁창이지만, 온라인에선 내가 길드장.",
+            "내 전투력은 식사량에 비례한다.",
+            "꿀꿀? 지금 나한테 한 소리냐능?",
+            "버터 냄새 난다고? 이건 부의 상징이야.",
+            "(코를 훌쩍이며) 엄마가 살은 나중에 키로 간댔어...",
+            "긁지 않은 복권... 그게 바로 나야. 당첨금이 좀 클 뿐.",
+            "후욱... 흥분시키지 마라. 내 안의 흑염룡이 깨어난다.",
+            "식비가 많이 드는 게 아니라, 내가 미식가인 거야.",
+            "아저씨라니! 난 마음만은 소년이라능!",
+            "모니터 속의 그녀 쨩이 밥 먹으라고 응원해줬어.",
+            "이 배는 인격의 크기를 나타내는 거지.",
+            "쿰... 척... (만족스러운 트림)",
+            "나를 감당할 수 있겠어? 이 압도적인 질량을?",
+            "77ㅓ억~~~~~ (잘 먹었다)"
         ];
 
         function enterSite() {
             var intro = document.getElementById("intro-screen");
             var audio = document.getElementById("myAudio");
-            intro.style.display = "none"; 
+            var mirrorBall = document.getElementById("mirrorBall");
+            var mirrorDots = document.getElementById("mirrorDots");
+
+            intro.style.display = "none";
+
+            // 미러볼 가동
+            mirrorBall.style.display = "block";
+            mirrorDots.style.display = "block";
+
             audio.volume = 0.6;
-            audio.play().catch(function(error) { console.log("BGM 재생 실패"); });
+            audio.play().catch(function(error) {
+                console.log("BGM 재생 실패");
+            });
         }
 
-        // 통합 상호작용 함수
         function handleInteraction() {
-            fireBurgers(); // 폭죽은 항상 터짐
+            fireBurgers();
 
             if (isFirstClick) {
-                // [1단계] 처음 클릭했을 때
+                // [1단계] 처음 클릭
                 document.body.classList.add("super-dank-mode");
                 document.getElementById("reaction-img").style.display = "block";
-                
+
                 var btn = document.querySelector(".btn");
-                btn.innerText = "77ㅓ억... (더 줘)"; // 버튼 텍스트 변경
+                btn.innerText = "77ㅓ억... (더 줘)";
                 btn.style.backgroundColor = "#555";
                 btn.style.color = "#fff";
-                btn.style.animation = "shake 0.1s infinite"; // 진동 더 빠르게
-                
+
                 // 첫 대사 (카오모지)
                 setTimeout(function() {
                     alert("후욱... 후욱... 맛있다능... (버거 흡입)\n\n✨(  ;; ￣ ～ ￣ ;;  )✨\n  [ 🎽 쿰 척 쿰 척 🎽 ]\n\n(두피에서 빛이 나며 만족합니다)");
                 }, 100);
 
-                isFirstClick = false; // 상태 변경
+                isFirstClick = false;
             } else {
-                // [2단계] 두 번째 클릭부터 (랜덤 대사 출력)
-                
-                // 랜덤 대사 뽑기
+                // [2단계] 반복 클릭
                 var randomIndex = Math.floor(Math.random() * uncleLines.length);
                 var selectedLine = uncleLines[randomIndex];
 
-                // 약간의 딜레이 후 대사창 띄우기
                 setTimeout(function() {
                     alert("[아저씨의 독백]\n\n" + selectedLine + "\n\n(현재상태: 배터짐)");
                 }, 100);
             }
         }
 
-        // 햄버거 폭죽 발사 함수
         function fireBurgers() {
             var btn = document.querySelector(".btn");
             var rect = btn.getBoundingClientRect();
@@ -255,7 +654,7 @@
                 let particle = document.createElement("div");
                 particle.innerText = "🍔";
                 particle.classList.add("burger-particle");
-                
+
                 let tx = (Math.random() - 0.5) * 400 + "px";
                 let ty = (Math.random() - 0.5) * 400 + "px";
                 let rot = (Math.random() * 360) + "deg";
@@ -269,10 +668,13 @@
 
                 document.body.appendChild(particle);
 
-                setTimeout(() => { particle.remove(); }, 1000);
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
             }
         }
     </script>
 
 </body>
+
 </html>
