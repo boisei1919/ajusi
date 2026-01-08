@@ -10,7 +10,7 @@
     <style>
         /* ========== [킹받는 디자인 구역] ========== */
         body {
-            font-family: 'Nanum Myeongjo', serif; 
+            font-family: 'Gungsuh', '궁서', serif; 
             background-color: #e8dab2; 
             background-image: linear-gradient(180deg, #fff9c4 0%, #d7ccc8 100%);
             color: #4e342e;
@@ -22,7 +22,6 @@
             overflow-x: hidden; 
         }
 
-        /* [입장 전 경고 화면] */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000; color: red; z-index: 9999;
@@ -42,13 +41,11 @@
             100% { opacity: 1; border-color: red; color: red; }
         }
 
-        /* 상단 흐르는 글씨 */
         .marquee-container {
             background: #ff0000; color: yellow; font-weight: bold; padding: 10px;
             font-size: 1.2rem; border-bottom: 3px solid black;
         }
 
-        /* [초강력 기름 모드] */
         body.super-dank-mode {
             background-color: #3e2723;
             background-image: repeating-linear-gradient(45deg, #3e2723, #3e2723 10px, #4e342e 10px, #4e342e 20px);
@@ -57,7 +54,6 @@
             color: #fff; text-shadow: 3px 3px 0px #ff0000;
         }
 
-        /* 메인 컨텐츠 박스 */
         .container {
             max-width: 600px; margin: 50px auto; background: #fff; padding: 30px;
             border: 10px ridge #d7ccc8; box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
@@ -71,7 +67,6 @@
         }
         @keyframes rainbow { 100% { filter: hue-rotate(360deg); } }
 
-        /* 프로필 사진 */
         .profile-img {
             width: 250px; height: 250px; background-color: #eee;
             border-radius: 50%; object-fit: cover; border: 10px double #ff0000;
@@ -90,43 +85,32 @@
             background-color: #000; color: #0f0 !important; padding: 20px;
             font-family: 'Courier New', monospace; list-style: square; text-align: left;
             border: 5px solid #0f0;
-            margin-bottom: 0; /* 아래쪽 여백 제거 (피카츄랑 붙이려고) */
+            margin-bottom: 0; 
         }
         .stats li {
             padding: 8px; font-size: 1.1rem; border-bottom: 1px dashed #0f0;
         }
 
-        /* ▼▼▼ [NEW] 스탯창 아래 피카츄들 정렬 ▼▼▼ */
         .dancers-row {
-            display: flex;             /* 가로로 나열 */
-            justify-content: center;   /* 가운데 정렬 */
-            gap: 10px;                 /* 피카츄 사이 간격 */
-            margin-top: 10px;          /* 스탯창이랑 약간 띄우기 */
-            margin-bottom: 10px;       /* 버튼이랑 띄우기 */
-            padding: 10px;
-            background-color: #eee;    /* 피카츄들이 서있는 바닥 색깔 */
-            border: 2px solid #ccc;    /* 바닥 테두리 */
+            display: flex; justify-content: center; gap: 10px; margin-top: 10px; margin-bottom: 10px;       
+            padding: 10px; background-color: #eee; border: 2px solid #ccc;    
         }
-
-        .dancer-icon {
-            width: 60px;  /* 피카츄 크기 (너무 크면 줄 깨져서 적당히 조절함) */
-            height: 60px;
-            object-fit: contain;
-        }
-        /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
+        .dancer-icon { width: 60px; height: 60px; object-fit: contain; }
 
         .btn {
             display: inline-block; margin-top: 25px; padding: 20px 40px;
             background-color: blue; color: yellow; text-decoration: none;
             font-size: 1.5rem; font-weight: bold; border: 5px outset white;
             cursor: pointer; animation: shake 0.3s infinite;
+            font-family: 'Gungsuh', '궁서', serif; 
+            position: relative; z-index: 10;
         }
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             50% { transform: translate(-1px, 2px) rotate(-1deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
-        .btn:active { border: 5px inset white; }
+        .btn:active { border: 5px inset white; transform: scale(0.95); }
 
         #reaction-img {
             display: none; width: 100%; max-width: 450px; margin: 30px auto 0;
@@ -136,8 +120,16 @@
             0% { transform: rotate(0deg) scale(0); } 100% { transform: rotate(720deg) scale(1); }
         }
 
-        .footer {
-            margin-top: 50px; font-size: 0.8rem; color: #aaa;
+        .footer { margin-top: 50px; font-size: 0.8rem; color: #aaa; }
+
+        /* 햄버거 폭죽 효과 */
+        .burger-particle {
+            position: fixed; font-size: 2rem; pointer-events: none; z-index: 9999;
+            animation: pop-out 1s ease-out forwards;
+        }
+        @keyframes pop-out {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.5); opacity: 0; }
         }
     </style>
 </head>
@@ -160,9 +152,7 @@
 
     <div class="container">
         <h1>♨ 파오후 아저씨 ♨</h1>
-        
         <img src="https://i.ifh.cc/nG2JHJ.jpg" alt="파오후 아저씨 사진" class="profile-img">
-        
         <div class="desc">
             "후욱... 후욱...<br>이건 살이 아니라<br>인.격.이.야."
         </div>
@@ -182,7 +172,8 @@
             <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
             <img class="dancer-icon" src="https://i.ifh.cc/NCa4qh.webp">
         </div>
-        <button class="btn" onclick="giveBurger()">
+        
+        <button id="burgerBtn" class="btn" onclick="handleInteraction()">
             🍔 햄버거 내놔 🍔
         </button>
 
@@ -195,7 +186,21 @@
     </div>
 
     <script>
-        // 입장 기능
+        var isFirstClick = true; // 첫 클릭인지 확인하는 변수
+        
+        // 아저씨 랜덤 대사 리스트
+        var uncleLines = [
+            "후욱... 제로콜라 마셨으니까 0칼로리라능.",
+            "야... 숨쉬기도 힘들다... (헐떡)",
+            "더 줘? 그럼 먹긴 먹는데...",
+            "(뱃살을 출렁거리며) 이건 지방이 아니라 튜브야.",
+            "니가 내 땀맛을 알아? ;;",
+            "쿰척... 쿰척... 쩝쩝...",
+            "오늘 운동은 숨쉬기 운동으로 대체한다.",
+            "배부른데... 계속 들어가네? 인체의 신비;;",
+            "후욱... 안경에 김서렸어..."
+        ];
+
         function enterSite() {
             var intro = document.getElementById("intro-screen");
             var audio = document.getElementById("myAudio");
@@ -204,17 +209,68 @@
             audio.play().catch(function(error) { console.log("BGM 재생 실패"); });
         }
 
-        // 햄버거 주기 기능
-        function giveBurger() {
-            document.body.classList.add("super-dank-mode");
-            document.getElementById("reaction-img").style.display = "block";
+        // 통합 상호작용 함수
+        function handleInteraction() {
+            fireBurgers(); // 폭죽은 항상 터짐
+
+            if (isFirstClick) {
+                // [1단계] 처음 클릭했을 때
+                document.body.classList.add("super-dank-mode");
+                document.getElementById("reaction-img").style.display = "block";
+                
+                var btn = document.querySelector(".btn");
+                btn.innerText = "77ㅓ억... (더 줘)"; // 버튼 텍스트 변경
+                btn.style.backgroundColor = "#555";
+                btn.style.color = "#fff";
+                btn.style.animation = "shake 0.1s infinite"; // 진동 더 빠르게
+                
+                // 첫 대사 (카오모지)
+                setTimeout(function() {
+                    alert("후욱... 후욱... 맛있다능... (버거 흡입)\n\n✨(  ;; ￣ ～ ￣ ;;  )✨\n  [ 🎽 쿰 척 쿰 척 🎽 ]\n\n(두피에서 빛이 나며 만족합니다)");
+                }, 100);
+
+                isFirstClick = false; // 상태 변경
+            } else {
+                // [2단계] 두 번째 클릭부터 (랜덤 대사 출력)
+                
+                // 랜덤 대사 뽑기
+                var randomIndex = Math.floor(Math.random() * uncleLines.length);
+                var selectedLine = uncleLines[randomIndex];
+
+                // 약간의 딜레이 후 대사창 띄우기
+                setTimeout(function() {
+                    alert("[아저씨의 독백]\n\n" + selectedLine + "\n\n(현재상태: 배터짐)");
+                }, 100);
+            }
+        }
+
+        // 햄버거 폭죽 발사 함수
+        function fireBurgers() {
             var btn = document.querySelector(".btn");
-            btn.innerText = "77ㅓ억... (행복사)";
-            btn.disabled = true;
-            btn.style.animation = "none"; 
-            btn.style.backgroundColor = "#555";
-            btn.style.color = "#fff";
-            alert("후욱... 후욱... 맛있다능... (기름 +100)");
+            var rect = btn.getBoundingClientRect();
+            var centerX = rect.left + rect.width / 2;
+            var centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 30; i++) {
+                let particle = document.createElement("div");
+                particle.innerText = "🍔";
+                particle.classList.add("burger-particle");
+                
+                let tx = (Math.random() - 0.5) * 400 + "px";
+                let ty = (Math.random() - 0.5) * 400 + "px";
+                let rot = (Math.random() * 360) + "deg";
+
+                particle.style.setProperty("--tx", tx);
+                particle.style.setProperty("--ty", ty);
+                particle.style.setProperty("--rot", rot);
+
+                particle.style.left = centerX + "px";
+                particle.style.top = centerY + "px";
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => { particle.remove(); }, 1000);
+            }
         }
     </script>
 
